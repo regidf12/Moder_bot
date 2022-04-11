@@ -12,7 +12,7 @@ You can follow me on my social networks:
 
 :information_source: [Website](https://white-prince.github.io/Homepage/)
 
-# White-prince Moderbot :robot:
+# White-prince Telegram-bot :robot:
 Bot moderator for telegram chat, version (0.1). Will be improved.
 
 ## Installation :gear:
