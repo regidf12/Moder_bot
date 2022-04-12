@@ -10,7 +10,7 @@ grt_kb.add(button_hi)
 grt_kb2 = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True
 ).add(button_hi)
-# Клавиши для быстрого набора
+# Кнопки для быстрого набора
 hi = KeyboardButton('Привет!')
 how = KeyboardButton('Как дела?')
 wd = KeyboardButton('Что делаете?')
@@ -19,12 +19,21 @@ buy = KeyboardButton('Пока!')
 
 markup3 = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True
-).add(hi).add(how).add(com).add(buy).add(wd)
+).add(hi).add(how).add(wd).add(com).add(buy)
 
 kbs = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True
 )
+# Кнопки для панели админестратора
 kbs.add(types.InlineKeyboardButton(text="Рассылка"))
 kbs.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
 kbs.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
 kbs.add(types.InlineKeyboardButton(text="Статистика"))
+
+krg = ReplyKeyboardMarkup(
+    resize_keyboard=True, one_time_keyboard=True
+)
+# Кнопки для панели регистрации
+krg.add(types.InlineKeyboardButton(text="Sing up"))
+krg.add(types.InlineKeyboardButton(text="Log in"))
+

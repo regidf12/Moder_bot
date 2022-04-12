@@ -9,12 +9,12 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.types import Message
 
-import config
 from config import TOKEN
 from config import ADMIN
 from messages import MESSAGES
 import keyboards as kb
 from keyboards import kbs
+from keyboards import krg
 from filter_admin import IsAdminFilter
 
 logging.basicConfig(level=logging.INFO)
@@ -23,11 +23,21 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=storage)
 banned_users = set()
 
-# Создаем базу данных
+# Создаем базу данных для панели админестратора
 conn = sqlite3.connect('db')
 cur = conn.cursor()
 cur.execute("""CREATE TABLE IF NOT EXISTS users(user_id INTEGER, block INTEGER);""")
 conn.commit()
+
+# Создаем базу данных для регистрации пользователей
+db = sqlite3.connect('server.db')
+sql = db.cursor()
+sql.execute("""CREATE TABLE IF NOT EXISTS users (
+    login TEXT,
+    password TEXT,
+    cash BEGIN
+)""")
+db.commit()
 
 
 class dialog(StatesGroup):
@@ -71,8 +81,8 @@ async def process_help_command(message: types.Message):
 
 @dp.message_handler(commands=['fm'])
 # Функция вызова быстрого сообщения, позволяет пользователю быстро выдовать стандартные фразы
-async def process_sk_command(message: types.Message):
-    await message.reply('Быстрое сообщение', reply_markup=kb.markup3, reply=False)
+async def process_fm_command(message: types.Message):
+    await message.answer('Функция быстрых фраз', reply_markup=kb.markup3)
 
 
 @dp.message_handler(content_types=['text'], text='Рассылка')
@@ -84,7 +94,7 @@ async def spam(message: Message):
 
 @dp.message_handler(state=dialog.spam)  # Функция рассылки
 async def start_spam(message: Message, state: FSMContext):
-    if message.text == 'Назад':
+    if message.text == 'Отмена':
         await message.answer('Главное меню', reply_markup=kbs)
         await state.finish()
     else:
@@ -98,7 +108,7 @@ async def start_spam(message: Message, state: FSMContext):
 
 
 @dp.message_handler(content_types=['text'], text='Добавить в Blacklist')
-async def hanadler(message: types.Message, state: FSMContext):
+async def handler(message: types.Message, state: FSMContext):
     if message.chat.id == ADMIN:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Назад"))
@@ -201,6 +211,39 @@ async def boom(message: types.Message):
 async def filter_msg(message: types.Message):
     if message.text in MESSAGES['badwords']:
         await message.delete()
+
+
+@dp.message_handler(commands=["acc"])
+#  Регистрация или фход в аккаунт
+async def regis(message: types.Message):
+    await message.answer('Выберите ваше действие', reply_markup=krg)
+
+
+@dp.message_handler(content_types=['text'], text='Sing up')
+async def regis(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
+        await state.finish()
+    else:
+        sql = db.cursor()
+        await message.answer('Введите Login:')
+        sql.execute(f'''INSERT login FROM users WHERE (login="{message.text}")''')
+        result = sql.fetchone()
+        db.commit()
+        sql = db.cursor()
+        await message.answer('Введите Password:')
+        sql.execute(f'''INSERT login FROM users WHERE (password="{message.text}")''')
+        result = sql.fetchone()
+        db.commit()
+
+
+@dp.message_handler(content_types=['text'], text='Log in')
+async def regis(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
+        await state.finish()
+    else:
+        pass
 
 
 async def shutdown(dispatcher: Dispatcher):
