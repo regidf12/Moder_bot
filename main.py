@@ -32,11 +32,13 @@ conn.commit()
 # Создаем базу данных для регистрации пользователей
 db = sqlite3.connect('server.db')
 sql = db.cursor()
+
 sql.execute("""CREATE TABLE IF NOT EXISTS users (
     login TEXT,
     password TEXT,
     cash BEGIN
 )""")
+
 db.commit()
 
 
@@ -191,7 +193,7 @@ async def proc(message: types.Message, state: FSMContext):
             await message.answer('Вы вводите текст\nВведи ID')
 
 
-@dp.message_handler(content_types=['text'], text='Статистика')
+@dp.message_handler(content_types=['text'], text='Статистика')  # Статистика по участникам бота
 async def handler(message: types.Message, state: FSMContext):
     curs = conn.cursor()
     curs.execute('''select * from users''')
@@ -199,46 +201,46 @@ async def handler(message: types.Message, state: FSMContext):
     await message.answer(f'Людей которые когда либо заходили в бота: {len(results)}')
 
     
-@dp.message_handler(commands=["boom"])
-# Взрывное сообщение
+@dp.message_handler(commands=["boom"])  # Взрывное сообщение
 async def boom(message: types.Message):
     time.sleep(3)
     await message.delete()
 
     
-@dp.message_handler()
-# Фильтор плохих слова
+@dp.message_handler()  # Фильтор плохих слова
 async def filter_msg(message: types.Message):
     if message.text in MESSAGES['badwords']:
         await message.delete()
 
 
-@dp.message_handler(commands=["acc"])
-#  Регистрация или фход в аккаунт
-async def regis(message: types.Message):
-    await message.answer('Выберите ваше действие', reply_markup=krg)
+@dp.message_handler(commands=["acc"])  # Регистрация или фход в аккаунт
+async def reg_command(message: types.Message):
+    await message.reply('Выберите ваше действие', reply_markup=krg)
 
 
 @dp.message_handler(content_types=['text'], text='Sing up')
-async def regis(message: types.Message, state: FSMContext):
+async def sing_up(message: types.Message, state: FSMContext):
     if message.text == 'Отмена':
         await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
         await state.finish()
     else:
-        sql = db.cursor()
         await message.answer('Введите Login:')
         sql.execute(f'''INSERT login FROM users WHERE (login="{message.text}")''')
-        result = sql.fetchone()
         db.commit()
-        sql = db.cursor()
+        await message.answer('Готово')
+        if message.text in sql:
+            await message.answer('Такой логин уже зарегестрирован')
         await message.answer('Введите Password:')
-        sql.execute(f'''INSERT login FROM users WHERE (password="{message.text}")''')
-        result = sql.fetchone()
+        sql.execute(f'''INSERT password FROM users WHERE (password="{message.text}")''')
         db.commit()
+        await message.answer('Готово')
+
+        for foo in sql.execute("SELECT * FROM users"):
+            await message.answer(foo)
 
 
 @dp.message_handler(content_types=['text'], text='Log in')
-async def regis(message: types.Message, state: FSMContext):
+async def log_in(message: types.Message, state: FSMContext):
     if message.text == 'Отмена':
         await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
         await state.finish()

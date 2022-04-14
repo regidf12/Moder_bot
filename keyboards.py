@@ -6,7 +6,6 @@ button_hi = KeyboardButton('Привет!\n Спасибо за информац
 grt_kb = ReplyKeyboardMarkup()
 grt_kb.add(button_hi)
 
-
 grt_kb2 = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True
 ).add(button_hi)
@@ -16,6 +15,8 @@ how = KeyboardButton('Как дела?')
 wd = KeyboardButton('Что делаете?')
 com = KeyboardButton('Зайдите пожалуйста в Discord')
 buy = KeyboardButton('Пока!')
+si = KeyboardButton("Sing up")
+lo = KeyboardButton("Log in")
 
 markup3 = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True
@@ -32,8 +33,5 @@ kbs.add(types.InlineKeyboardButton(text="Статистика"))
 
 krg = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True
-)
-# Кнопки для панели регистрации
-krg.add(types.InlineKeyboardButton(text="Sing up"))
-krg.add(types.InlineKeyboardButton(text="Log in"))
+).add(si).add(lo)
 
