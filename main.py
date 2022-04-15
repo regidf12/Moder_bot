@@ -213,7 +213,7 @@ async def filter_msg(message: types.Message):
         await message.delete()
 
 
-@dp.message_handler(commands=["acc"])  # Регистрация или фход в аккаунт
+@dp.message_handler(commands=["acc"])  # Регистрация в аккаунт
 async def reg_command(message: types.Message):
     await message.reply('Выберите ваше действие', reply_markup=krg)
 
