@@ -15,8 +15,6 @@ how = KeyboardButton('Как дела?')
 wd = KeyboardButton('Что делаете?')
 com = KeyboardButton('Зайдите пожалуйста в Discord')
 buy = KeyboardButton('Пока!')
-si = KeyboardButton("Sing up")
-lo = KeyboardButton("Log in")
 
 markup3 = ReplyKeyboardMarkup(
     resize_keyboard=True, one_time_keyboard=True
@@ -31,7 +29,9 @@ kbs.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
 kbs.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
 kbs.add(types.InlineKeyboardButton(text="Статистика"))
 
+si = KeyboardButton('Sing up')
+lo = KeyboardButton('Log in')
+
 krg = ReplyKeyboardMarkup(
-    resize_keyboard=True, one_time_keyboard=True
 ).add(si).add(lo)
 
