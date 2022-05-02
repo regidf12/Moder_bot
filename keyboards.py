@@ -32,6 +32,5 @@ kbs.add(types.InlineKeyboardButton(text="Статистика"))
 si = KeyboardButton('Sing up')
 lo = KeyboardButton('Log in')
 
-krg = ReplyKeyboardMarkup(
-).add(si).add(lo)
+krg = ReplyKeyboardMarkup().add(si).add(lo)
 

@@ -32,11 +32,9 @@ conn.commit()
 # Создаем базу данных для регистрации пользователей
 db = sqlite3.connect('server.db')
 sql = db.cursor()
-
-sql.execute("""CREATE TABLE IF NOT EXISTS users (
+sql.execute("""CREATE TABLE IF NOT EXISTS pols(
     login TEXT,
-    password TEXT,
-    cash BEGIN
+    password TEXT
 )""")
 
 db.commit()
@@ -79,6 +77,12 @@ async def start(message: Message):
 # Команда помощь
 async def process_help_command(message: types.Message):
     await message.reply(MESSAGES['help'], reply=False)
+
+
+@dp.message_handler(commands="sys")
+# Регистрация в аккаунт
+async def reg_command(message: types.Message):
+    await message.answer('Выберите ваше действие', reply_markup=krg)
 
 
 @dp.message_handler(commands=['fm'])
@@ -200,7 +204,48 @@ async def handler(message: types.Message, state: FSMContext):
     results = curs.fetchall()
     await message.answer(f'Людей которые когда либо заходили в бота: {len(results)}')
 
-    
+
+@dp.message_handler(content_types=['text'], text='Sing up')
+async def sing_up(message: types.Message, state: FSMContext):
+    await message.answer('Для возвращения напишите: Отмена')
+    if message.text == 'Отмена':
+        await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
+        await state.finish()
+    await message.answer('Введите Login: ')
+    time.sleep(15)
+    if message.text in sql:
+        await message.answer('Такой логин уже зарегестрирован')
+    else:
+        sql.execute(f"SELECT login FROM pols WHERE login = '{message.text}'")
+        login = message.text
+        password = None
+        sql.execute(f"INSERT INTO pols VALUES (?, ?)", (login, password))
+        db.commit()
+        await message.answer('Готово')
+        await message.answer('Введите Password: ')
+        password = message.text
+        sql.execute(f"SELECT login FROM pols WHERE password = '{message.text}'")
+        sql.execute(f"INSERT INTO pols VALUES (?, ?)", (login, password))
+        db.commit()
+        await message.answer('Вы зарегестрированны')
+
+
+@dp.message_handler(content_types=['text'], text='Log in')
+async def log_in(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
+        await state.finish()
+    else:
+        await message.answer('Введите Логин')
+        time.sleep(15)
+        if message.text in sql:
+            await message.answer('Введите пароль')
+            time.sleep(15)
+            await message.answer('Вы вошли в систему')
+        else:
+            await message.answer('Такого пользователя не существует')
+
+
 @dp.message_handler(commands=["boom"])  # Взрывное сообщение
 async def boom(message: types.Message):
     time.sleep(3)
@@ -211,42 +256,6 @@ async def boom(message: types.Message):
 async def filter_msg(message: types.Message):
     if message.text in MESSAGES['badwords']:
         await message.delete()
-
-
-@dp.message_handler(commands=["acc"])
-# Регистрация в аккаунт
-async def reg_command(message: types.Message):
-    await message.answer('Выберите ваше действие', reply_markup=krg)
-
-
-@dp.message_handler(content_types=['text'], text='Sing up')
-async def sing_up(message: types.Message, state: FSMContext):
-    if message.text == 'Отмена':
-        await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
-        await state.finish()
-    else:
-        await message.answer('Введите Login:')
-        sql.execute(f'''INSERT login FROM users WHERE (login="{message.text}")''')
-        db.commit()
-        await message.answer('Готово')
-        if message.text in sql:
-            await message.answer('Такой логин уже зарегестрирован')
-        await message.answer('Введите Password:')
-        sql.execute(f'''INSERT password FROM users WHERE (password="{message.text}")''')
-        db.commit()
-        await message.answer('Готово')
-
-        for foo in sql.execute("SELECT * FROM users"):
-            await message.answer(foo)
-
-
-@dp.message_handler(content_types=['text'], text='Log in')
-async def log_in(message: types.Message, state: FSMContext):
-    if message.text == 'Отмена':
-        await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
-        await state.finish()
-    else:
-        pass
 
 
 async def shutdown(dispatcher: Dispatcher):
