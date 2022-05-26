@@ -211,39 +211,44 @@ async def sing_up(message: types.Message, state: FSMContext):
     if message.text == 'Отмена':
         await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
         await state.finish()
-    await message.answer('Введите Login: ')
-    time.sleep(15)
-    if message.text in sql:
+    if message.text != 'Отмена':
+        await message.answer('Введите Login: ')
+        time.sleep(15)
+        sql.execute(f"SELECT login FROM pols WHERE login = '{message.text}'")
         await message.answer('Такой логин уже зарегестрирован')
     else:
         sql.execute(f"SELECT login FROM pols WHERE login = '{message.text}'")
         login = message.text
-        password = None
+        password = 0000
         sql.execute(f"INSERT INTO pols VALUES (?, ?)", (login, password))
         db.commit()
         await message.answer('Готово')
-        await message.answer('Введите Password: ')
-        password = message.text
-        sql.execute(f"SELECT login FROM pols WHERE password = '{message.text}'")
-        sql.execute(f"INSERT INTO pols VALUES (?, ?)", (login, password))
-        db.commit()
-        await message.answer('Вы зарегестрированны')
+        if password == 0000:
+            await message.answer('Введите Password: ')
+            time.sleep(15)
+            password = message.text
+            sql.execute(f"SELECT login FROM pols WHERE password = '{message.text}'")
+            sql.execute(f"INSERT INTO pols VALUES (?, ?)", (login, password))
+            db.commit()
+            await message.answer('Вы зарегестрированны')
 
 
 @dp.message_handler(content_types=['text'], text='Log in')
 async def log_in(message: types.Message, state: FSMContext):
+    await message.answer('Для возвращения напишите: Отмена')
     if message.text == 'Отмена':
         await message.answer('Отмена! Возвращаю назад.', reply_markup=krg)
         await state.finish()
-    else:
+    elif message.text != 'Отмена':
         await message.answer('Введите Логин')
         time.sleep(15)
-        if message.text in sql:
-            await message.answer('Введите пароль')
-            time.sleep(15)
-            await message.answer('Вы вошли в систему')
-        else:
-            await message.answer('Такого пользователя не существует')
+        sql.execute(f"SELECT login FROM pols WHERE login = '{message.text}'")
+        await message.answer('Введите пароль')
+        sql.execute(f"SELECT password FROM pols WHERE password = '{message.text}'")
+        time.sleep(15)
+        await message.answer('Вы вошли в систему')
+    else:
+        await message.answer('Такого пользователя не существует')
 
 
 @dp.message_handler(commands=["boom"])  # Взрывное сообщение
