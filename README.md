@@ -1,4 +1,4 @@
-# Welcome to White-prince ::
+# Welcome to White-prince :crown:
 
 [![White-prince](https://github.com/White-prince/White-prince/blob/main/assets/White-prince_0.jpg?raw=true)](https://white-prince.github.io/Homepage/)
 
