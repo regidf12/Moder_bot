@@ -1,6 +1,6 @@
 # Welcome to Dive-into-dev  :minidisc:
 
- [![Dive-into-dev](https://github.com/Dive-dev/Dive-dev/blob/main/assets/VKHeader2.png?raw=true)]()
+[![White-prince](https://github.com/Dive-dev/Dive-dev/blob/main/assets/VKHeader2.png?raw=true)](http://white-prince.ru/)
 
 You can follow me on my social networks:
 
@@ -14,7 +14,7 @@ You can follow me on my social networks:
 
 [![Facebook](https://img.shields.io/badge/-Facebook-131313?style=for-the-badge&logo=Facebook)](https://www.facebook.com/profile.php?id=100023988285502)
 
-# White-prince Telegram-bot :robot:
+# Telegram-bot :robot:
 Bot moderator for telegram chat, version (0.1). Will be improved.
 
 ## Installation :gear:
