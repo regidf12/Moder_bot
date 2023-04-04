@@ -13,7 +13,7 @@ You can follow me on my social networks:
   [![Gmail](https://img.shields.io/badge/-Gmail-131313?style=for-the-badge&logo=Gmail&logoColor=white)](https://mail.google.com/mail/u/0/?fs=1&tf=cm&source=mailto&to=tiltedfear@gmail.com)
 
 # Telegram-bot :robot:
-Bot moderator for telegram chat, version (0.1). Will be improved.
+Bot moderator for telegram chat. Will be improved.
 
 ## Installation :gear:
 If you are cloning a project, run it first, otherwise you can download the source on the release page and skip this step.
