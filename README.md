@@ -1,5 +1,3 @@
-# Welcome to Regidf
-
 # Telegram-bot :robot:
 Bot moderator for telegram chat. Will be improved.
 
