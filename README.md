@@ -29,5 +29,3 @@ About the code:
 - The folder messages.py contains prepared messages
 - The folder keyboards.py contains the speed dial functions
 - The folder filters.py contains the administrator authentication function
-
-Hope this code helps you
