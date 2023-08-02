@@ -1,5 +1,5 @@
 # Telegram-bot :robot:
-Bot moderator for telegram chat. Will be improved.
+Bot moderator for telegram chat. Will be improved
 
 ## Installation :gear:
 If you are cloning a project, run it first, otherwise you can download the source on the release page and skip this step.
